@@ -55,11 +55,10 @@
 		//canvas.style.backgroundColor = "transparent";
 		canvas.style.zIndex = "100000";
 		document.body.appendChild(canvas);
-		preloadFlakes();
-		initFlakes();
-		window.requestAnimationFrame(draw);
-		console.log(canvas.width);
-		console.log(canvas.height);
+		preloadFlakes(function(){
+			initFlakes();
+			window.requestAnimationFrame(draw);
+		});
 	}
 
 	window.onresize = function() {
@@ -68,13 +67,27 @@
 	};
 
 	var flakeImgs = [];
+	var flakes_to_load = 0;
 
-	var preloadFlakes = function(){
-		for ( var i = 1; i < 2/*01*/; i++ ) {
+	var preloadFlakes = function(cb){
+		flakes_to_load = 12;
+		for ( var i = 1; i < flakes_to_load + 1/*01*/; i++ ) {
 			(function(i){
 				var f = new Image();
+				
+				f.onload = function() {
+					flakes_to_load--;
+					var c = document.createElement("canvas");
+					c.width = 50;
+					c.height = 50;
+					con = c.getContext("2d");
+					con.drawImage(f,0,0,50,50);
+					flakeImgs.push(c);
+					if ( flakes_to_load === 0 ) {
+						cb();
+					}
+				};
 				f.src = flakes_path + 'sniegparsla ('+i+').svg';
-				flakeImgs.push(f);
 			})(i);
 		}
 	};
@@ -90,15 +103,16 @@
 			flake : flakeImgs[Math.floor(Math.random()*flakeImgs.length)],
 			sign : Math.random() > 0.5 ? 1 : -1,
 			speed : 0.5 + Math.random(),
-			amplitude : 10 + Math.random() * 3,
-			size: 10 + Math.floor(Math.random() * 15)
+			amplitude : 10 + Math.random() * 4,
+			size: 10 + Math.floor(Math.random() * 16),
+			blink_variance : Math.random()*10
 		};
 		f.o = f.x;
 		return f;
 	};
 
 	var initFlakes = function(){
-		for ( var i = 0; i < 100; i++ ) {
+		for ( var i = 0; i < 150; i++ ) {
 			flakes.push(createFlake(true));
 		}
 	};
@@ -118,7 +132,7 @@
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		for ( var i = 0, l = flakes.length; i < l; i++ ) {
 			ctx.save();
-			ctx.globalAlpha = (1 - flakes[i].y / canvas.height);
+			ctx.globalAlpha = (1 - flakes[i].y / canvas.height) * Math.abs(Math.sin(flakes[i].y/(20+flakes[i].blink_variance)));
 			//console.log(ctx.globalAlpha);
 			ctx.drawImage(flakes[i].flake,flakes[i].x - flakes[i].size/2, flakes[i].y - flakes[i].size/2, flakes[i].size,flakes[i].size);
 			ctx.restore();
