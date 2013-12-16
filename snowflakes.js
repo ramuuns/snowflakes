@@ -115,6 +115,8 @@
 		return f;
 	};
 
+	var dir = 1;
+
 	var initFlakes = function(){
 		for ( var i = 0; i < 150; i++ ) {
 			flakes.push(createFlake(true));
@@ -122,8 +124,14 @@
 	};
 
 	var updateFlakes = function() {
+		if ( Math.random() > 0.99 ) {
+			dir = !dir ? (Math.random() > 0.5 ? -1 : 1) : 0;
+		}
 		for ( var i = 0, l = flakes.length; i < l; i++ ) {
-			flakes[i].y += flakes[i].speed;
+			if ( flakes[i].size > 20 ) {
+				flakes[i].o += dir*0.5;
+			}
+			flakes[i].y += flakes[i].speed * flakes[i].size/18 * flakes[i].size/18;
 			flakes[i].x = flakes[i].o + flakes[i].sign * Math.sin(flakes[i].y/20) * flakes[i].amplitude;
 			flakes[i].angle += flakes[i].spin;
 			flakes[i].width = Math.abs(Math.sin(flakes[i].y/20)*flakes[i].size)
@@ -138,7 +146,7 @@
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		for ( var i = 0, l = flakes.length; i < l; i++ ) {
 			ctx.save();
-			ctx.globalAlpha = (1 - flakes[i].y / canvas.height) * Math.abs(Math.sin(flakes[i].y/(20+flakes[i].blink_variance)));
+			ctx.globalAlpha = (1 - flakes[i].y / canvas.height) * (0.4 + 0.6*Math.abs(Math.sin(flakes[i].y/(20+flakes[i].blink_variance))));
 			//console.log(ctx.globalAlpha);
 			ctx.translate(flakes[i].x ,flakes[i].y);
 			ctx.rotate(flakes[i].angle);
