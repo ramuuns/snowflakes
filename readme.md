@@ -1,6 +1,6 @@
 #Snowflakes
 
-for this holiday season we give you a simple way to annoy your website visitors and waist their CPU cycles - Yes you've guessed it snowflakes on a webpage.
+for this holiday season we give you a simple way to annoy your website visitors and waste their CPU cycles - Yes you've guessed it snowflakes on a webpage.
 
 Now we know, this used to be done the old fasion way in the 90ies, but now we have canvas and pointer-events:none, so the pesky things won't interfear with anything else on the page.
 
