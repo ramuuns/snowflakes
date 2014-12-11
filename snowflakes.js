@@ -117,7 +117,7 @@
 			width:0,
 			blink_variance : Math.random()*10,
 			angle : Math.random() * Math.PI,
-			spin : (Math.random() > 0.5 ? -1 : 1 ) * Math.random()*0.05,
+			spin : (Math.random() > 0.5 ? -1 : 1 ) * Math.random()*0.05
 		};
 		if ( options.nuclearMode ) {
 			var c = document.createElement("canvas");
