@@ -63,18 +63,18 @@
 
 	window.onresize = function() {
 		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;	
+		canvas.height = window.innerHeight;
 	};
 
 	var flakeImgs = [];
 	var flakes_to_load = 0;
 
 	var preloadFlakes = function(cb){
-		flakes_to_load = 12;
+		flakes_to_load = 200;
 		for ( var i = 1; i < flakes_to_load + 1/*01*/; i++ ) {
 			(function(i){
 				var f = new Image();
-				
+
 				f.onload = function() {
 					flakes_to_load--;
 					var c = document.createElement("canvas");
