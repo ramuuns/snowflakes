@@ -12,4 +12,6 @@ add a script tag pointing to snowflakes.js, and then in your domready function c
 
 You can also configure the amount of snow that you want by doing this:
 
-    window.snowflakes({amount:300}); // three hundred snowflakes 
+    window.snowflakes({amount:300}); // three hundred snowflakes
+
+Also there is a boolean `nuclearMode` option that will make your visitors leave the website even faster.

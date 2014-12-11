@@ -13,7 +13,8 @@
 
 	var canvas, ctx;
 	var defaults = {
-		amount: 250
+		amount: 250,
+		nuclearMode : false
 	};
 	var options = {};
 
@@ -98,6 +99,10 @@
 
 	var flakes = [];
 
+	var randomColor = function() {
+		return "rgb("+Math.floor(Math.random()*256)+","+Math.floor(Math.random()*256)+","+Math.floor(Math.random()*256)+")";
+	}
+
 	var createFlake = function(first){
 		first = first || false;
 		var f = {
@@ -112,8 +117,21 @@
 			width:0,
 			blink_variance : Math.random()*10,
 			angle : Math.random() * Math.PI,
-			spin : (Math.random() > 0.5 ? -1 : 1 ) * Math.random()*0.05
+			spin : (Math.random() > 0.5 ? -1 : 1 ) * Math.random()*0.05,
 		};
+		if ( options.nuclearMode ) {
+			var c = document.createElement("canvas");
+			c.width = 50;
+			c.height = 50;
+			con = c.getContext("2d");
+			con.drawImage(f.flake,0,0,50,50);
+
+			con.fillStyle = randomColor();
+			con.globalCompositeOperation = "source-in";
+			con.fillRect(0, 0, 50, 50);
+			f.flake = c;
+		}
+
 		f.o = f.x;
 		f.width = f.size * Math.random();
 		return f;
@@ -155,6 +173,7 @@
 			ctx.translate(flakes[i].x ,flakes[i].y);
 			ctx.rotate(flakes[i].angle);
 			ctx.drawImage(flakes[i].flake,-flakes[i].size/2, -flakes[i].width/2, flakes[i].size,flakes[i].width);
+
 			//ctx.rotate(-flakes[i].angle);
 			ctx.restore();
 		}
@@ -168,6 +187,7 @@
 
 	var constr = function(opts) {
 		options.amount = opts && opts.amount && typeof opts.amount === typeof defaults.amount ? opts.amount : defaults.amount;
+		options.nuclearMode = opts && opts.nuclearMode && typeof opts.nuclearMode === typeof defaults.nuclearMode ? opts.nuclearMode : defaults.nuclearMode;
 		init();
 	};
 
