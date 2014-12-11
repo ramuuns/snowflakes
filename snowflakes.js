@@ -12,6 +12,10 @@
 	var flakes_path = script_path + '/img/';
 
 	var canvas, ctx;
+	var defaults = {
+		amount: 250
+	};
+	var options = {};
 
 	if (!Date.now) {
     	Date.now = function() { return new Date().getTime(); };
@@ -118,7 +122,7 @@
 	var dir = 1;
 
 	var initFlakes = function(){
-		for ( var i = 0; i < 150; i++ ) {
+		for ( var i = 0; i < options.amount; i++ ) {
 			flakes.push(createFlake(true));
 		}
 	};
@@ -162,7 +166,8 @@
 		window.requestAnimationFrame(draw);
 	};
 
-	var constr = function() {
+	var constr = function(opts) {
+		options.amount = opts && opts.amount && typeof opts.amount === typeof defaults.amount ? opts.amount : defaults.amount;
 		init();
 	};
 
