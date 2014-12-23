@@ -3,8 +3,8 @@
 	var script_path = '';
 	var scripts = document.getElementsByTagName("script");
 	for ( var i = 0, l = scripts.length; i < l; i++ ) {
-		if ( scripts.item(i).src.match(/snowflakes.js/) ) {
-			script_path = scripts.item(i).src.split("snowflakes.js")[0];
+		if ( scripts.item(i).src.match(/snowflakes(\.min)?.js/) ) {
+			script_path = scripts.item(i).src.split("snowflakes.")[0];
 			break;
 		}
 	}
@@ -14,7 +14,8 @@
 	var canvas, ctx;
 	var defaults = {
 		amount: 250,
-		nuclearMode : false
+		nuclearMode : false,
+		color: "#fff"
 	};
 	var options = {};
 
@@ -119,14 +120,14 @@
 			angle : Math.random() * Math.PI,
 			spin : (Math.random() > 0.5 ? -1 : 1 ) * Math.random()*0.05
 		};
-		if ( options.nuclearMode ) {
+		if ( options.nuclearMode || options.color !== defaults.color ) {
 			var c = document.createElement("canvas");
 			c.width = 50;
 			c.height = 50;
 			con = c.getContext("2d");
 			con.drawImage(f.flake,0,0,50,50);
 
-			con.fillStyle = randomColor();
+			con.fillStyle = options.nuclearMode ? randomColor() : options.color;
 			con.globalCompositeOperation = "source-in";
 			con.fillRect(0, 0, 50, 50);
 			f.flake = c;
@@ -188,6 +189,7 @@
 	var constr = function(opts) {
 		options.amount = opts && opts.amount && typeof opts.amount === typeof defaults.amount ? opts.amount : defaults.amount;
 		options.nuclearMode = opts && opts.nuclearMode && typeof opts.nuclearMode === typeof defaults.nuclearMode ? opts.nuclearMode : defaults.nuclearMode;
+		options.color = opts && opts.color && typeof opts.color === typeof defaults.color ? opts.color : defaults.color;
 		init();
 	};
 
