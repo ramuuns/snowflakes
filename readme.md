@@ -10,8 +10,10 @@ Oh, usage:
 
 add a script tag pointing to snowflakes.js, and then in your domready function call `window.snowflakes();`
 
-You can also configure the amount of snow that you want by doing this:
+You can also pass an options object, where you can configure the behaviour of this thing.
+The following options are available:
 
-    window.snowflakes({amount:300}); // three hundred snowflakes
-
-Also there is a boolean `nuclearMode` option that will make your visitors leave the website even faster.
+    amount // int, defaults to 250
+    color // string, any css color, defaults to #fff
+    nuclearMode // boolean, defaults to false - overrides the color setting
+    invertDirection // boolean, defaults to false

@@ -15,7 +15,8 @@
 	var defaults = {
 		amount: 250,
 		nuclearMode : false,
-		color: "#fff"
+		color: "#fff",
+		invertDirection : false
 	};
 	var options = {};
 
@@ -171,7 +172,7 @@
 			ctx.save();
 			ctx.globalAlpha = (1 - flakes[i].y / canvas.height) * (0.4 + 0.6*Math.abs(Math.sin(flakes[i].y/(20+flakes[i].blink_variance))));
 			//console.log(ctx.globalAlpha);
-			ctx.translate(flakes[i].x ,flakes[i].y);
+			ctx.translate(flakes[i].x ,options.invertDirection ? (canvas.height - flakes[i].y) : flakes[i].y);
 			ctx.rotate(flakes[i].angle);
 			ctx.drawImage(flakes[i].flake,-flakes[i].size/2, -flakes[i].width/2, flakes[i].size,flakes[i].width);
 
@@ -190,6 +191,7 @@
 		options.amount = opts && opts.amount && typeof opts.amount === typeof defaults.amount ? opts.amount : defaults.amount;
 		options.nuclearMode = opts && opts.nuclearMode && typeof opts.nuclearMode === typeof defaults.nuclearMode ? opts.nuclearMode : defaults.nuclearMode;
 		options.color = opts && opts.color && typeof opts.color === typeof defaults.color ? opts.color : defaults.color;
+		options.invertDirection = opts && opts.invertDirection && typeof opts.invertDirection === typeof defaults.invertDirection ? opts.invertDirection : defaults.invertDirection;
 		init();
 	};
 
